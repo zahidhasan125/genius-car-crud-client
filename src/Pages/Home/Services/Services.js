@@ -5,7 +5,7 @@ const Services = () => {
 
     const [services, setServices] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5000/services')
+        fetch('https://genius-car-server-woad.vercel.app/services')
             .then(res => res.json())
             .then(data => setServices(data))
     }, [])
@@ -17,9 +17,9 @@ const Services = () => {
                 <p className='py-5'>The majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. </p>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12'>
-            {
-                services.map(service=><ServiceItem key={service._id} service={service}></ServiceItem>)
-            }
+                {
+                    services.map(service => <ServiceItem key={service._id} service={service}></ServiceItem>)
+                }
             </div>
         </div>
     );

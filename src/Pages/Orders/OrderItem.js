@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
 const OrderItem = ({ order, handleDeleteOrder, handleUpdateOrder }) => {
-    const {_id, service, customer, phone, serviceName, price, status } = order;
+    const { _id, service, customer, phone, serviceName, price, status } = order;
     const [selectedService, setSelectedService] = useState({});
 
     useEffect(() => {
-        fetch(`http://localhost:5000/services/${service}`)
+        fetch(`https://genius-car-server-woad.vercel.app/services/${service}`)
             .then(res => res.json())
             .then(data => setSelectedService(data))
     }, [service])
     return (
         <tr>
             <th>
-                <button onClick={()=>handleDeleteOrder(_id)} className="btn btn-circle btn-sm btn-outline">
+                <button onClick={() => handleDeleteOrder(_id)} className="btn btn-circle btn-sm btn-outline">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </th>
@@ -38,7 +38,7 @@ const OrderItem = ({ order, handleDeleteOrder, handleUpdateOrder }) => {
             </td>
             <td className='w-12'>Purple</td>
             <th>
-                <button onClick={()=>handleUpdateOrder(_id)} className={status ? "btn btn-success btn-xs" : "btn btn-warning btn-xs"}>{status ? status : "Pending"}</button>
+                <button onClick={() => handleUpdateOrder(_id)} className={status ? "btn btn-success btn-xs" : "btn btn-warning btn-xs"}>{status ? status : "Pending"}</button>
             </th>
         </tr>
     );

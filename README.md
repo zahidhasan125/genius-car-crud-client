@@ -1,5 +1,17 @@
 # Getting Started with Create React App
 
+
+## [Live Site](https://my-genius-car-auth.web.app/)
+
+[https://my-genius-car-auth.web.app/](https://my-genius-car-auth.web.app/)
+
+
+## [Server Site](https://genius-car-server-woad.vercel.app/)
+
+[https://genius-car-server-woad.vercel.app/](https://genius-car-server-woad.vercel.app/)
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

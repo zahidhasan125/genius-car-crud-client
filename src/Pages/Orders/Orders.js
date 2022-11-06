@@ -8,7 +8,7 @@ const Orders = () => {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/orders?email=${user?.email}`, {
+        fetch(`https://genius-car-server-woad.vercel.app/orders?email=${user?.email}`, {
             // for checking send the jwt token in headers
             headers: {
                 authorization: `Bearer ${localStorage.getItem('genius-token')}`
@@ -30,7 +30,7 @@ const Orders = () => {
     const handleDeleteOrder = id => {
         const proceed = window.confirm('Are you sure, delete this service order?')
         if (proceed) {
-            fetch(`http://localhost:5000/orders/${id}`, {
+            fetch(`https://genius-car-server-woad.vercel.app/orders/${id}`, {
                 method: "DELETE",
                 headers: {
                     authorization: `Bearer ${localStorage.getItem('genius-token')}`
@@ -48,7 +48,7 @@ const Orders = () => {
     }
 
     const handleUpdateOrder = id => {
-        fetch(`http://localhost:5000/orders/${id}`, {
+        fetch(`https://genius-car-server-woad.vercel.app/orders/${id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json',

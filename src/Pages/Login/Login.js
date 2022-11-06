@@ -29,7 +29,7 @@ const Login = () => {
                 }
 
                 // make an api call to server route for jwt
-                fetch('http://localhost:5000/jwt', {
+                fetch('https://genius-car-server-woad.vercel.app/jwt', {
 
                     method: "POST",
                     headers: {
@@ -38,7 +38,7 @@ const Login = () => {
                     // send current users data (email)
                     body: JSON.stringify(currentUser)
                 })
-                    .then(res=> res.json())
+                    .then(res => res.json())
                     .then(data => {
                         console.log(data);
                         // save the token to localStorage or httpOnlyCookie
