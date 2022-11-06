@@ -56,7 +56,25 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                navigate(from, { replace: true });
+                const currentUser = {
+                    email: user.email
+                }
+                fetch('https://genius-car-server-woad.vercel.app/jwt', {
+
+                    method: "POST",
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    // send current users data (email)
+                    body: JSON.stringify(currentUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        // save the token to localStorage or httpOnlyCookie
+                        localStorage.setItem('genius-token', data.token);
+                        navigate(from, { replace: true });
+                    })
             })
             .catch(err => {
                 console.error(err);

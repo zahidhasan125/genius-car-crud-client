@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import svg from '../../assets/images/login/login.svg'
 import { AuthContext } from '../../contexts/AuthProvider';
 
 const SignUp = () => {
-    const {createUser}= useContext(AuthContext)
+    const { createUser } = useContext(AuthContext)
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
 
     const handleSignUp = event => {
         event.preventDefault();
@@ -12,14 +15,34 @@ const SignUp = () => {
         const email = form.email.value;
         const password = form.password.value;
 
+
         createUser(email, password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
-             })
+                const currentUser = {
+                    email: user.email
+                }
+                fetch('https://genius-car-server-woad.vercel.app/jwt', {
+
+                    method: "POST",
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    // send current users data (email)
+                    body: JSON.stringify(currentUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        // save the token to localStorage or httpOnlyCookie
+                        localStorage.setItem('genius-token', data.token);
+                        navigate(from, { replace: true });
+                    })
+            })
             .catch(err => {
-            console.log(err);
-        })
+                console.log(err);
+            })
 
     }
     return (
@@ -47,7 +70,7 @@ const SignUp = () => {
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="password" name='password' placeholder="password" className="input input-bordered" />                            
+                            <input type="password" name='password' placeholder="password" className="input input-bordered" />
                         </div>
                         <div className="form-control mt-6">
                             <input type='submit' className="btn btn-warning" value="Sign Up"></input>
