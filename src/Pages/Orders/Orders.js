@@ -3,16 +3,29 @@ import { AuthContext } from '../../contexts/AuthProvider';
 import OrderItem from './OrderItem';
 
 const Orders = () => {
-    const { user } = useContext(AuthContext);
+    const { user, logOut } = useContext(AuthContext);
 
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/orders?email=${user?.email}`)
-            .then(res => res.json())
+        fetch(`http://localhost:5000/orders?email=${user?.email}`, {
+            // for checking send the jwt token in headers
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('genius-token')}`
+            }
+        })
+            .then(res => {
+                // check if the jwt sends any unauthorized access or forbidden, if yes we can simply logOut the user
+                if (res.status === 401 || res.status === 403) {
+                    logOut()
+                        .then(result => { })
+                        .catch(() => { })
+                }
+                return res.json()
+            })
             .then(data => setOrders(data))
-    }, [user?.email])
-    
+    }, [logOut, user?.email])
+
     const handleDeleteOrder = id => {
         const proceed = window.confirm('Are you sure, delete this service order?')
         if (proceed) {
@@ -26,7 +39,7 @@ const Orders = () => {
                         const remainingOrders = orders.filter(order => order._id !== id)
                         setOrders(remainingOrders);
                     }
-            })
+                })
         }
     }
 
@@ -36,10 +49,10 @@ const Orders = () => {
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify({status: 'Approved'})
-        }            
+            body: JSON.stringify({ status: 'Approved' })
+        }
         )
-            .then(res=>res.json())
+            .then(res => res.json())
             .then(data => {
                 console.log(data);
                 if (data.modifiedCount > 0) {
@@ -49,7 +62,7 @@ const Orders = () => {
                     const newOrders = [approved, ...remaining];
                     setOrders(newOrders);
                 }
-        })
+            })
     }
 
     return (
@@ -61,7 +74,7 @@ const Orders = () => {
                         <th>Name</th>
                         <th>Job</th>
                         <th>Favorite Color</th>
-                        <th>Approval</th>                        
+                        <th>Approval</th>
                     </tr>
                 </thead>
                 <tbody>

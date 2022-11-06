@@ -1,30 +1,54 @@
 import React, { useContext } from 'react';
 import svg from '../../assets/images/login/login.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
 import { GoogleAuthProvider } from 'firebase/auth';
 
 
 const Login = () => {
-
     const { loginUser, googleSignIn } = useContext(AuthContext);
-
     const googleProvider = new GoogleAuthProvider();
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || '/';
 
     const handleLogin = event => {
         event.preventDefault();
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
-        
+
         loginUser(email, password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                const currentUser = {
+                    email: user.email
+                }
+
+                // make an api call to server route for jwt
+                fetch('http://localhost:5000/jwt', {
+
+                    method: "POST",
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    // send current users data (email)
+                    body: JSON.stringify(currentUser)
+                })
+                    .then(res=> res.json())
+                    .then(data => {
+                        console.log(data);
+                        // save the token to localStorage or httpOnlyCookie
+                        localStorage.setItem('genius-token', data.token);
+                        navigate(from, { replace: true });
+                    })
             })
             .catch(err => {
-            console.error(err);
-        })
+                console.error(err);
+            })
 
     }
     const handleGoogle = () => {
@@ -32,10 +56,11 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                navigate(from, { replace: true });
             })
             .catch(err => {
-            console.error(err);
-        })
+                console.error(err);
+            })
     }
     return (
         <div className="hero w-full">
