@@ -17,7 +17,8 @@ const Orders = () => {
             .then(res => {
                 // check if the jwt sends any unauthorized access or forbidden, if yes we can simply logOut the user
                 if (res.status === 401 || res.status === 403) {
-                    logOut()
+
+                    return logOut()
                         .then(result => { })
                         .catch(() => { })
                 }
@@ -30,7 +31,10 @@ const Orders = () => {
         const proceed = window.confirm('Are you sure, delete this service order?')
         if (proceed) {
             fetch(`http://localhost:5000/orders/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('genius-token')}`
+                }
             })
                 .then(res => res.json())
                 .then(data => {
@@ -47,7 +51,8 @@ const Orders = () => {
         fetch(`http://localhost:5000/orders/${id}`, {
             method: 'PATCH',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('genius-token')}`
             },
             body: JSON.stringify({ status: 'Approved' })
         }
