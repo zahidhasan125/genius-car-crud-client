@@ -15,7 +15,7 @@ const AboutUs = () => {
                     <p className="text-orange-600 font-bold">About Us</p>
                     <h1 className="text-5xl font-bold w-4/5">We are qualified & of experience in this field</h1>
                     <p className="pt-6">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomized words which don't look even slightly believable. </p>
-                    <p className="py-6">the majority have suffered alteration in some form, by injected humour, or randomized words which don't look even slightly believable. </p>
+                    <p className="py-6">The majority have suffered alteration in some form, by injected humour, or randomized words which don't look even slightly believable.</p>
                     <button className="btn btn-warning">Get More Info</button>
                 </div>
             </div>
